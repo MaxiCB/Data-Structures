@@ -9,17 +9,24 @@ class LinkedList:
     def __init__(self):
         self.head: Node or None = None
         self.tail: Node or None = None
+        self.length = 0
+
+    def __len__(self):
+        return self.length
 
     def add_to_tail(self, key: int) -> Node:
         new_node = Node(key)
         if not self.head and not self.tail:
             self.head = new_node
             self.tail = new_node
+            self.length += 1
             return new_node
         self.tail.next = new_node
         new_node.next = None
         new_node.prev = self.tail
         self.tail = new_node
+        self.length += 1
+        return self.tail
 
     def remove_tail(self) -> int or None:
         if not self.head and not self.tail:
@@ -28,10 +35,12 @@ class LinkedList:
             old_tail: Node = self.tail
             self.tail = None
             self.head = None
+            self.length -= 1
             return old_tail.value
         old_tail: Node = self.tail
         self.tail = old_tail.prev
         self.tail.next = None
+        self.length -= 1
         return old_tail.value
 
     def add_to_head(self, key: int) -> Node:
@@ -39,12 +48,14 @@ class LinkedList:
         if not self.head and not self.tail:
             self.head = new_node
             self.tail = new_node
+            self.length += 1
             return new_node
         self.head.prev = new_node
         new_node.prev = None
         new_node.next = self.head
         self.head = new_node
-        return new_node
+        self.length += 1
+        return self.head
 
     def remove_head(self) -> int or None:
         if not self.head and not self.tail:
@@ -53,10 +64,12 @@ class LinkedList:
             old_head = self.head
             self.head = None
             self.tail = None
+            self.length -= 1
             return old_head.value
         old_head = self.head
         self.head = self.head.next
         self.head.prev = None
+        self.length -= 1
         return old_head.value
 
     def contains(self, key: int) -> bool:
